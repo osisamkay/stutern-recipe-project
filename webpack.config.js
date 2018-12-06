@@ -7,7 +7,6 @@ const config = {
   output: {
     filename: 'bundle.js',
     path: `${__dirname}/docs`,
-    // publicPath: './',
   },
   module: {
     rules: [
@@ -39,10 +38,14 @@ const config = {
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
+  devServer: {
+    historyApiFallback: true,
+  },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'React Recipe App',
-      template: 'src/template.html'
+      template: 'src/template.html',
+      favicon: 'assets/favicon.ico',
     })
   ],
 };
