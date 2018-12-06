@@ -5,7 +5,9 @@ const config = {
   mode: 'development',
   entry: ['./src/index.js'],
   output: {
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    path: `${__dirname}/docs`,
+    // publicPath: './',
   },
   module: {
     rules: [
