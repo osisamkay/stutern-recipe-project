@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import { Grid, Column } from './Grid';
 import FoodBg from '../../assets/food-bg.jpg';
 import FoodItem from './FoodItem';
+import Footer from './Footer';
+import Container from './Container';
 
 const HomeStyle = styled.div`
   header, footer{
@@ -11,12 +15,6 @@ const HomeStyle = styled.div`
   main{
     margin: 20px 0;
   }
-`;
-
-const Container = styled.div`
-  width: 90%;
-  max-width: 1000px;
-  margin: auto;
 `;
 
 const Header = styled.header`
@@ -28,21 +26,31 @@ const Header = styled.header`
   color: #fff;
 `;
 
-const Footer = styled.footer`
-  padding: 20px;
-  background: #f80;
-  color: #fff;
-`;
-
 class Home extends Component {
   constructor() {
     super();
     this.state = {
-      date: (new Date()).getFullYear(),
+      recipes: [],
+      ready: 'initial',
     };
   }
+  componentDidMount() {
+    this.setState({
+      ready: 'loading',
+    });
+    axios({
+      method: 'get',
+      url: `${process.env.HOST}/Cuisines`,
+      headers: {Authorization: `Bearer ${process.env.API_KEY}`},
+    }).then(({ data: { records } }) => {
+      this.setState({
+        ready: 'loaded',
+        recipes: records,
+      })
+    })
+  }
   render() {
-    const { date } = this.state;
+    const { recipes, ready } = this.state;
     return (
       <HomeStyle>
         <Header>
@@ -52,21 +60,19 @@ class Home extends Component {
         <main>
           <Container>
             <Grid>
-              <Column>
-                <FoodItem name="Jollof Rice and Plantain" rating="4.5" />
-              </Column>
-              <Column>
-                <FoodItem name="Fried Rice" rating="5.0" />
-              </Column>
-              <Column>
-                <FoodItem name="Alfredo Fettucine and Chicken" rating="3.0" />
-              </Column>
+              { recipes.length ? '' : 'There are no recipe items'  }
+              { ready === 'loading' ? 'Loading...' : '' }
+              { recipes.map(recipe => (
+                <Column key={recipe.id}>
+                  <FoodItem image={recipe.fields.Icon[0].url} rating="4.5">
+                    <h3><Link to={`/recipe/${recipe.id}`}>{recipe.fields.Name}</Link></h3>
+                  </FoodItem>
+                </Column>
+              )) }
             </Grid>
           </Container>
         </main>
-        <Footer>
-          <p>&copy; {date} Recipouille</p>
-        </Footer>
+        <Footer />
       </HomeStyle>
     );
   }

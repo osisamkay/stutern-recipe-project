@@ -5,7 +5,7 @@ const FoodItemStyle = styled.div`
   height: 300px;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
-  background: #f80;
+  background: var(--color-brand-1);
   color: #fff;
   overflow: hidden;
   img{
@@ -20,16 +20,20 @@ const FoodItemStyle = styled.div`
     margin: 5px 0;
   }
   h3{
+    margin: 12px 0;
     font-weight: 300;
-    font-size: 20px;
+    font-size: 25px;
+  }
+  a{
+    color: inherit;
   }
 `;
 
-const FoodItem = ({ name, rating }) => (
+const FoodItem = ({ children, rating, image }) => (
   <FoodItemStyle>
-    <img src="http://placehold.it/400" alt="Food item" />
+    <img src={image} alt="Food item" />
     <div>
-      <h3>{name}</h3>
+      {children}
       <h5>{rating}</h5>
     </div>
   </FoodItemStyle>

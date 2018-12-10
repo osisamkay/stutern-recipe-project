@@ -1,4 +1,5 @@
 require('dotenv').config();
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 console.log(process.env.NODE_ENV);
 const config = {
@@ -7,6 +8,7 @@ const config = {
   output: {
     filename: 'bundle.js',
     path: `${__dirname}/docs`,
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -43,10 +45,10 @@ const config = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'React Recipe App',
       template: 'src/template.html',
       favicon: 'assets/favicon.ico',
-    })
+    }),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'API_KEY', 'HOST']),
   ],
 };
 
