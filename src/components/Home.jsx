@@ -56,7 +56,7 @@ class Home extends Component {
         <Header>
           <h1>Recipouille</h1>
           <p>Your Trusted Source For Great Food Recipes</p>
-          <Form/>
+          <Form />
         </Header>
         <main>
           <Container>
